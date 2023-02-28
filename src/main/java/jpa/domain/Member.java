@@ -13,6 +13,21 @@ public class Member {
 
     private String name;
 
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public Member() {}
+
+    public Member(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
