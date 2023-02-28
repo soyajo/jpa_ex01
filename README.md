@@ -1,14 +1,10 @@
 # jpa_ex01
----
 
 자바 ORM 표준 JPA 프로그래밍 - 기본편 / 2 회독
----
 
 ## chapter01 - jpa소개
----
 
 ### ORM이란?
----
 
 - Object-relational mapping (객체 관계 매핑)
 - 객체랑 관계형 데이터베이스랑 매핑하는 것
