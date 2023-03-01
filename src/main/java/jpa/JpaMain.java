@@ -94,29 +94,50 @@ public class JpaMain {
              * jpql 쿼리 실행 - 자동호출
              * em.flush() - 수동호출
              */
-            Member member = new Member("memberA");
+//            Member member = new Member("memberA");
+//
+//            em.persist(member);
+//
+//            // 여기서 insert
+//            em.flush();
+//
+//            System.out.println("===================");
+//
+//            // select 문은 안나감 (영속성 컨테이너에서 가지고옴)
+//            Member findMember1 = em.find(Member.class, member.getId());
+//
+//            // select
+//            // Long 타입이라 L 붙여야함. (안하면 에러)
+//            // id 가 존재하지 않으면 에러
+//            Member findMember2 = em.find(Member.class, 7L);
+//
+//            System.out.println("findMembe2 = " + findMember2);
+//
+//            // update
+//            findMember2.setName("memberC");
+//            ts.commit();
+            /**
+             * 준영속 상태
+             * 영속 -> 준영속
+             *
+             */
+            // 영속
+//            Member member = em.find(Member.class, 18L);
+//            member.setName("AAAA");
+//
+//            // 준영속 상태
+//            // 업데이트가 안됨.
+//            em.detach(member);
+//            em.clear();
+//
+//            // 업데이트 됨.
+//            Member member1 = em.find(Member.class, 18L);
+//            member1.setName("BBBB");
+//
+//            System.out.println("===============");
+//            ts.commit();
 
-            em.persist(member);
 
-            // 여기서 insert
-            em.flush();
-
-            System.out.println("===================");
-
-            // select 문은 안나감 (영속성 컨테이너에서 가지고옴)
-            Member findMember1 = em.find(Member.class, member.getId());
-
-            // select
-            // Long 타입이라 L 붙여야함. (안하면 에러)
-            // id 가 존재하지 않으면 에러
-            Member findMember2 = em.find(Member.class, 7L);
-
-            System.out.println("findMembe2 = " + findMember2);
-
-            // update
-            findMember2.setName("memberC");
-
-            ts.commit();
         } catch (Exception e) {
             e.printStackTrace();
             ts.rollback();
