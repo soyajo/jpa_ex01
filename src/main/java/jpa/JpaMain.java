@@ -1,9 +1,7 @@
 package jpa;
 
 
-import jpa.domain.Member;
-import jpa.domain.RoleType;
-import jpa.domain.Team;
+import jpa.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -240,29 +238,49 @@ public class JpaMain {
              * - 컨트롤러에 entity를 반환하지말라.
              * - DTO로 변환해서 반환한다.
              */
-            Team team = new Team("teamA");
-            em.persist(team);
+//            Team team = new Team("teamA");
+//            em.persist(team);
+//
+//            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+//            // 연관관계 편의 메소드 (2방법)
+//            member.changeTeam(team);
+////            team.addMember(member);
+//
+//            // 이걸 합쳐야한다. (연관관계 편의 메소드)
+////            member.setTeam(team);
+////            team.getMembers().add(member);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            // null
+//            System.out.println("findMember.getTeam() = " + findMember.getTeam());
+//
+//            ts.commit();
 
-            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
-            // 연관관계 편의 메소드 (2방법)
-            member.changeTeam(team);
-//            team.addMember(member);
+            /**
+             * 연관관계 매핑 시작
+             *
+             */
+            Order order = new Order("order1",LocalDate.now());
+            em.persist(order);
 
-            // 이걸 합쳐야한다. (연관관계 편의 메소드)
-//            member.setTeam(team);
-//            team.getMembers().add(member);
-            em.persist(member);
+            OrderItem orderItem = new OrderItem(1000, 2);
+            em.persist(orderItem);
+
+            order.addOrderItem(orderItem);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            // null
-            System.out.println("findMember.getTeam() = " + findMember.getTeam());
+            Order findOrder = em.find(Order.class, order.getId());
+            OrderItem findOrderItem = em.find(OrderItem.class, orderItem.getId());
+            System.out.println("findOrder = " + findOrder);
+            System.out.println("findOrderItem = " + findOrderItem);
 
             ts.commit();
-
-
 
 
         } catch (Exception e) {
