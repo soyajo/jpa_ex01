@@ -25,12 +25,12 @@ import java.util.Date;
  *  - 디비에 미리 50 시퀀스 올려놓고 사용
  *
  */
-@SequenceGenerator(
-        name = "member_seq_generator",
-        sequenceName = "member_seq",
-        initialValue = 1,
-        allocationSize = 50
-)
+//@SequenceGenerator(
+//        name = "member_seq_generator",
+//        sequenceName = "member_seq",
+//        initialValue = 1,
+//        allocationSize = 50
+//)
 /**
  * @GeneratedValue(strategy = GenerationType.TABLE) 전략
  *
@@ -48,7 +48,7 @@ public class Member {
      * strategy = GenerationType.AUTO - 기본
      */
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     /**
      * autoIncrement 개념과 동일
      * 기본키생성을 db에 위임
@@ -59,7 +59,7 @@ public class Member {
      * 오라클 기본키 전략
      * 시퀀스 object 생성
      */
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
     /**
      * 키 생성 전용 테이블을 하나 만들어서 데이터베이스 시퀀스를 흉내내는 전략
      * 장점 : 모든 데이터베이스에 적용 가능
@@ -80,6 +80,15 @@ public class Member {
     private String name;
 
     private Integer age;
+
+    /**
+     * 연관관계의 주인
+     * FetchType.LAZY - 지연로딩
+     *
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     /**
      * EnumType.STRING - string 그대로 들어감.
@@ -219,4 +228,19 @@ public class Member {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        // 연관관계 편의 메소드
+        team.getMembers().add(this);
+    }
+
 }

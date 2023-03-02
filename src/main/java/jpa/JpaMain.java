@@ -3,6 +3,7 @@ package jpa;
 
 import jpa.domain.Member;
 import jpa.domain.RoleType;
+import jpa.domain.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -181,6 +182,87 @@ public class JpaMain {
 //            System.out.println("findMember = " + findMember);
 //            //insert
 //            ts.commit();
+
+            /**
+             * 단방향 연관관계
+             *
+             */
+//            Team team = new Team("teamA");
+//            em.persist(team);
+//            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+//            member.setTeam(team);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember = " + findMember);
+//
+//            ts.commit();
+            /**
+             * 양반향 연관관계 - 실패 예.
+             * - 주의사항!!!
+             */
+//            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+//
+//            Team team = new Team("teamA");
+//            // 연관관계의 주인이 member.setTeam() 이라 member.team_id 에 값이 안들어가진다.
+//            team.getMembers().add(member);
+//            em.persist(team);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            // null
+//            System.out.println("findMember.getTeam() = " + findMember.getTeam());
+//
+//            ts.commit();
+            /**
+             * 양방향 연관관계 - 올바른 예.
+             * - 단방향 매핑만으로 이미 연관관계 매핑은 완료 (중요)
+             * - 단방향 매핑을 잘 하고 양방향은 필요할 때 추가하기.
+             * - jpql에서 역방향으로 탐색할 일이 많음.
+             * - 순수 객체 상태를 고려해서 항상 양쪽에 값을 설정하자.
+             * - 연관관계 편의 메소드를 생성하자.
+             * - 양방향 연관관계 셋팅할 때는 둘다 셋팅해야한다.
+             *
+             * 연관관계의 주인을 정하는 기준
+             * - fk 위치로 기준으로 정함.
+             *
+             * 주의사항
+             * - 양방향 매핑시에 무한 루프를 조심하자
+             * - 예 ) toString(), lombok, JSON 생성 라이브러리
+             * 해결
+             * - 롬북 toString - 사용 x
+             * - 컨트롤러에 entity를 반환하지말라.
+             * - DTO로 변환해서 반환한다.
+             */
+            Team team = new Team("teamA");
+            em.persist(team);
+
+            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+            // 연관관계 편의 메소드 (2방법)
+            member.changeTeam(team);
+//            team.addMember(member);
+
+            // 이걸 합쳐야한다. (연관관계 편의 메소드)
+//            member.setTeam(team);
+//            team.getMembers().add(member);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            // null
+            System.out.println("findMember.getTeam() = " + findMember.getTeam());
+
+            ts.commit();
+
+
 
 
         } catch (Exception e) {
