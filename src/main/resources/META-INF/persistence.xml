@@ -40,7 +40,7 @@
                 - validate 까지만 가능
                 - 초기 개발할 때, 디비 다듬을 때 사용.(create)
             -->
-<!--            <property name="hibernate.hbm2ddl.auto" value="create" />-->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
             <!--변경분만 반영(운영DB에는 사용하면 안됨)-->
 <!--            <property name="hibernate.hbm2ddl.auto" value="update" />-->
             <!--create와 동일, 마지막에 drop-->
@@ -48,7 +48,7 @@
             <!--엔티티와 테이블이 정상 매핑되었는지만 확인-->
 <!--            <property name="hibernate.hbm2ddl.auto" value="validate" />-->
             <!--스키마 자동 생성 안함, 운영에 사용-->
-            <property name="hibernate.hbm2ddl.auto" value="none" />
+<!--            <property name="hibernate.hbm2ddl.auto" value="none" />-->
         </properties>
     </persistence-unit>
 </persistence>

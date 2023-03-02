@@ -2,11 +2,13 @@ package jpa;
 
 
 import jpa.domain.Member;
+import jpa.domain.RoleType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.Date;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -137,7 +139,16 @@ public class JpaMain {
 //            System.out.println("===============");
 //            ts.commit();
 
+            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),"description1");
+            em.persist(member);
 
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember = " + findMember);
+
+            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
