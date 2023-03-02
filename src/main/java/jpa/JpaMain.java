@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.xml.crypto.Data;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class JpaMain {
@@ -139,16 +142,46 @@ public class JpaMain {
 //            System.out.println("===============");
 //            ts.commit();
 
-            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),"description1");
-            em.persist(member);
 
-            em.flush();
-            em.clear();
+            /**
+             * @GeneratedValue(strategy = GenerationType.IDENTITY) 전략
+             * em.persist(member); 이 때 insert 문 실행
+             */
+//            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+//            System.out.println("===============");
+//            em.persist(member);
+//            System.out.println("member.getId() = " + member.getId());
+//            System.out.println("===============");
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember = " + findMember);
+//
+//            ts.commit();
 
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember = " + findMember);
+            /**
+             * @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
+             *
+             */
+//            Member member = new Member("memberA",10, RoleType.ADMIN,new Date(),new Date(),LocalDate.now(), LocalDateTime.now(),"description1","code");
+//            System.out.println("===============");
+//            // 시퀀스 생성
+//            em.persist(member);
+//            System.out.println("member.getId() = " + member.getId());
+//            System.out.println("===============");
+//
+//            // allocationSize = 50 설정하면 실행 시 1 부터 시작, 두 번째 실행 시 51 부터 시작
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember = " + findMember);
+//            //insert
+//            ts.commit();
 
-            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

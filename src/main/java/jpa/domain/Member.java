@@ -12,10 +12,60 @@ import java.util.Date;
 
 @Entity
 @Table()
+/**
+ * @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator") 전략
+ * 오라클 기본키 전략
+ * 시퀀스 object 생성
+ * SequenceGenerator
+ *
+ *  initialValue
+ *  - 시퀀스 ddl을 생성할 때 처음 1 시작하는 수를 지정
+ *  allocationSize
+ *  - 시퀀스 한 번 호출에 증가하는 수(성능 최적화에 사용, db 시퀀스 값이 하나씩 증가하도록 설정되어 있으면 이 값을 반드시 1로 성정해야함.)
+ *  - 디비에 미리 50 시퀀스 올려놓고 사용
+ *
+ */
+@SequenceGenerator(
+        name = "member_seq_generator",
+        sequenceName = "member_seq",
+        initialValue = 1,
+        allocationSize = 50
+)
+/**
+ * @GeneratedValue(strategy = GenerationType.TABLE) 전략
+ *
+ */
+//@TableGenerator(
+//        name = "MEMBER_SEQ_GENERATOR",
+//        table = "MY_SEQUENCES",
+//        pkColumnValue = "MEMBER_SEQ",
+//        allocationSize = 1
+//)
 public class Member {
 
+    /**
+     * 기본키 매핑
+     * strategy = GenerationType.AUTO - 기본
+     */
     @Id
-    @GeneratedValue
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    /**
+     * autoIncrement 개념과 동일
+     * 기본키생성을 db에 위임
+     * em.persist() 시점에 바로 insert 쿼리 적용!!! (중요)
+      */
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /**
+     * 오라클 기본키 전략
+     * 시퀀스 object 생성
+     */
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
+    /**
+     * 키 생성 전용 테이블을 하나 만들어서 데이터베이스 시퀀스를 흉내내는 전략
+     * 장점 : 모든 데이터베이스에 적용 가능
+     * 단점 : 성능
+     */
+//    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")
     private Long id;
 
     /**
@@ -60,13 +110,16 @@ public class Member {
     @Transient
     private String code;
 
-    public Member(String name, Integer age, RoleType roleType, Date createdDate, Date lastModifiedDate, String description) {
+    public Member(String name, Integer age, RoleType roleType, Date createdDate, Date lastModifiedDate, LocalDate testLocalDate, LocalDateTime localDateTime, String description, String code) {
         this.name = name;
         this.age = age;
         this.roleType = roleType;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
+        this.testLocalDate = testLocalDate;
+        this.localDateTime = localDateTime;
         this.description = description;
+        this.code = code;
     }
 
     public Integer getAge() {
@@ -141,5 +194,29 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public LocalDate getTestLocalDate() {
+        return testLocalDate;
+    }
+
+    public void setTestLocalDate(LocalDate testLocalDate) {
+        this.testLocalDate = testLocalDate;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
