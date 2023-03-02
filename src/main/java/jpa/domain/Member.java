@@ -95,6 +95,12 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
+
+
     /**
      * EnumType.STRING - string 그대로 들어감.
      * EnumType.ORDINAL - 순서대로 숫자로 변경해서 들어감.
