@@ -564,6 +564,8 @@ public class JpaMain {
              * - 도메인 주도 설계 (DDD)의 Aggregate Root개념을 구현할 때 유용
              */
 
+
+
 //            Child child1 = new Child();
 //            child1.setName("c1");
 //            Child child2 = new Child();
