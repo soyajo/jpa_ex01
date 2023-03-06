@@ -647,6 +647,11 @@ public class JpaMain {
 //
 //            ts.commit();
 
+            /**
+             * 값 타입 컬렉션
+             * 
+             *
+             */
 
 
         } catch (Exception e) {
