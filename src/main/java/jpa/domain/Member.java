@@ -43,7 +43,7 @@ import java.util.List;
 //        pkColumnValue = "MEMBER_SEQ",
 //        allocationSize = 1
 //)
-public class Member {
+public class Member extends BaseEntity{
 
     /**
      * 기본키 매핑
@@ -112,10 +112,10 @@ public class Member {
     /**
      * 요즘에는 localDate 나 localDateTime 을 사용함.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date createdDate;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date lastModifiedDate;
     private LocalDate testLocalDate;
     private LocalDateTime localDateTime;
     /**
@@ -134,8 +134,8 @@ public class Member {
         this.name = name;
         this.age = age;
         this.roleType = roleType;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
+//        this.createdDate = createdDate;
+//        this.lastModifiedDate = lastModifiedDate;
         this.testLocalDate = testLocalDate;
         this.localDateTime = localDateTime;
         this.description = description;
@@ -158,21 +158,21 @@ public class Member {
         this.roleType = roleType;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
+//    public Date getCreatedDate() {
+//        return createdDate;
+//    }
+//
+//    public void setCreatedDate(Date createdDate) {
+//        this.createdDate = createdDate;
+//    }
+//
+//    public Date getLastModifiedDate() {
+//        return lastModifiedDate;
+//    }
+//
+//    public void setLastModifiedDate(Date lastModifiedDate) {
+//        this.lastModifiedDate = lastModifiedDate;
+//    }
 
     public String getDescription() {
         return description;
@@ -189,8 +189,8 @@ public class Member {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", roleType=" + roleType +
-                ", createdDate=" + createdDate +
-                ", lastModifiedDate=" + lastModifiedDate +
+//                ", createdDate=" + createdDate +
+//                ", lastModifiedDate=" + lastModifiedDate +
                 ", description='" + description + '\'' +
                 ", code='" + code + '\'' +
                 '}';

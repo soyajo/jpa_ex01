@@ -264,27 +264,27 @@ public class JpaMain {
              * 연관관계 매핑 시작
              *
              */
-            Order order = new Order("order1",LocalDate.now());
-            em.persist(order);
-
-            OrderItem orderItem = new OrderItem(1000, 2);
-            em.persist(orderItem);
-
-            order.addOrderItem(orderItem);
-
-            em.flush();
-            em.clear();
-
-            Order findOrder = em.find(Order.class, order.getId());
-            OrderItem findOrderItem = em.find(OrderItem.class, orderItem.getId());
-            System.out.println("findOrder = " + findOrder);
-            System.out.println("findOrderItem = " + findOrderItem);
-
-            ts.commit();
+//            Order order = new Order("order1",LocalDate.now());
+//            em.persist(order);
+//
+//            OrderItem orderItem = new OrderItem(1000, 2);
+//            em.persist(orderItem);
+//
+//            order.addOrderItem(orderItem);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Order findOrder = em.find(Order.class, order.getId());
+//            OrderItem findOrderItem = em.find(OrderItem.class, orderItem.getId());
+//            System.out.println("findOrder = " + findOrder);
+//            System.out.println("findOrderItem = " + findOrderItem);
+//
+//            ts.commit();
 
             /**
              *
-             연관관계 매핑 시 고려사항
+             * 연관관계 매핑 시 고려사항
              * - 다중성
              * - 단방향, 양뱡향
              * - 연관관계 주인
@@ -308,13 +308,84 @@ public class JpaMain {
              * - 주인테이블이 아닌 대상테이블에 외래키가 있으면 안됨. (jpa가 지원을 안함)
              *
              * 다대다 관계
-             * -
+             * - 사용하면 안됨.
+             * - 꼭해야하겠다면 중간 엔티티,테이블을 생성해서 OneToMany, ManyToOne 으로 설계해서 만들어야한다.
              */
 
+            /**
+             * 고급 매핑
+             *
+             * 상속관계 매핑
+             * - 관계형 데이터베이스는 상속 관계 x
+             * - 객체의 상속과 구조와 DB의 슈퍼타입 서브타입 관계를 매핑
+             * - 기존 코드를 고치지않고 어노테이션만 바꿔서 매
+             *
+             * 조인 전략
+             * 장점
+             * - 테이블이 정규화됨.
+             * - 저장공간효율화
+             * - 외래 키 참조 무결성 제약조건 활용가능
+             * 단점
+             * - 조회 시 조인을 많이 사용, 성능 저하 ( 막 저하되지 않음.)
+             * - 조회 쿼리가 복잡함
+             * - 데이터 저장시 insert sql 2번 호출
+             *
+             * 단일 테이블 전략
+             * 장점
+             * - 조인이 필요 없으므로 일반적으로 조회 성능이 빠름
+             * - 조회 쿼리가 단순함.
+             * 단점
+             * - 자식 엔티티가 매핑한 컬럼은 모두 null 허용
+             * - 단일 테이블에 모든 것을 저장하므로 테이블이 커질 수 있는 상황에 따라서 조회 성능이 오히려 안좋아질 수 있다.
+             *
+             * 구현 클래스마다 테이블 전략
+             * 장점
+             * - 서브타입을 명확하게 구분해서 처리할 때 효과적
+             * - not null 제약조건 사용 가능
+             * 단점
+             * - 여러 자식 테이블을 함께 조회할 때 성능이 느림
+             * - 자식 테이블을 통합해서 쿼리하기 어려움
+             *
+             *
+             * 실무팁!!!
+             * 기본적으로 조인 전략으로 가고 단순한 상속관계 매핑이면 단일 테이블 전략으로 가는게 맞음.
+             * 구현 클래스마다 테이블 전략은 절대 사용하지 않는걸로....
+             *
+             */
+//            Movie movie = new Movie();
+//            movie.setDirector("A");
+//            movie.setActor("BBB");
+//            movie.setName("바람과함께사라지다");
+//            movie.setPrice(10000);
+//
+//            em.persist(movie);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Movie findMovie = em.find(Movie.class, movie.getId());
+//            System.out.println("findMovie = " + findMovie);
+//
+//            ts.commit();
+
+            /**
+             * @MappedSuperclass
+             * - 공통 매핑 정보가 필요할 때 사용 (id, name)
+             *
+             */
+            Member member = new Member();
+            member.setName("user1");
+            member.setCreatedBy("kim");
+            member.setCreatedDate(LocalDateTime.now());
 
 
+            em.persist(member);
+
+            em.flush();
+            em.clear();
 
 
+            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
