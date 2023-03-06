@@ -563,9 +563,6 @@ public class JpaMain {
              * - 두 옵션을 모두 활성화 하면 부모 엔티티를 통해서 자식의 생명주기를 관리할 수 있음.
              * - 도메인 주도 설계 (DDD)의 Aggregate Root개념을 구현할 때 유용
              */
-
-
-
 //            Child child1 = new Child();
 //            child1.setName("c1");
 //            Child child2 = new Child();
@@ -595,11 +592,58 @@ public class JpaMain {
              * - 잘 설계한 ORM 애플리케이션은 매핑한 테이블의 수보다 클래스의 수가 더 많음
              *
              */
-            Member member = new Member();
-            member.setName("member1");
-            member.setHomeAddress(new Address("city", "street", "zipcode"));
-            member.setPeriod(new Period());
-            em.persist(member);
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(new Address("city", "street", "zipcode"));
+//            member.setPeriod(new Period());
+//            em.persist(member);
+//
+//            ts.commit();
+
+            /**
+             * 값 타입와 불변 객체
+             * 값 타입
+             * - 실제 인스턴스인 값을 공유하는 것은 위험
+             * - 값을 복사해서 사용해야 함.
+             *
+             * 객체 타입의 합계
+             * - 항상 값을 복사해서 사용하면 공유 참조로 인해 발생하는 부작용을 피할 수 있다.
+             * - 문제는 임베디드 타입처럼 직접 정의한 값 타입은 자바의 기본 타입이 아니라 객체 타입이다.
+             * - 자바 기본 타입에 값을 대입하면 값을 복사한다.
+             * - 객체 타입은 참조 값을 직접 대입하는 것을 막을 방법이 없다.
+             * - 객체의 공유 참조는 피할 수 없다.
+             *
+             * 해결방안
+             * 불변 객체 (immutable object)
+             * - 객체 타입을 수정할 수 없게 만들면 부작용을 원천 차단
+             * - 값 타입은 불변 객체로 설계해야함.
+             * - 생성자로만 값을 설정하고 수정자를 만들지 않으면 됨
+             * 참고 : Integer, String은 자바가 제공하는 대표적인 불변 객체
+             *
+             *
+             * 불변객체 사용법
+             * 값타입의 클래스를 setter 를 없애던가 private 으로 변경한다.(컴파일러단에서 막을 수 있음)
+             *
+             */
+            Address newAddress = new Address("newCity", "street", "10000");
+            // 해결방안
+            Address oldAddress = new Address("oldCity", "street", "10000");
+
+            Member member1 = new Member();
+            member1.setName("member1");
+            member1.setHomeAddress(newAddress);
+            em.persist(member1);
+
+            Address address1 = new Address(newAddress.getCity(), oldAddress.getZipcode(), oldAddress.getZipcode());
+
+            Member member2 = new Member();
+            member2.setName("member2");
+            // 실수로 newAddress 를 넣으면 컴파일단에서 막을 방법이 없다.
+            member2.setHomeAddress(oldAddress);
+            em.persist(member2);
+
+            // member1, member2 둘 다 변경.
+//            member1.getHomeAddress().setCity("newCity");
 
             ts.commit();
 
