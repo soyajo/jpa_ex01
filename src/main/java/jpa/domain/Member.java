@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * 엔티티 매핑
- *
  */
 
 @Entity
@@ -43,7 +42,7 @@ import java.util.List;
 //        pkColumnValue = "MEMBER_SEQ",
 //        allocationSize = 1
 //)
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 
     /**
      * 기본키 매핑
@@ -55,7 +54,7 @@ public class Member extends BaseEntity{
      * autoIncrement 개념과 동일
      * 기본키생성을 db에 위임
      * em.persist() 시점에 바로 insert 쿼리 적용!!! (중요)
-      */
+     */
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /**
      * 오라클 기본키 전략
@@ -110,7 +109,6 @@ public class Member extends BaseEntity{
     private Locker locker;
 
 
-
     /**
      * EnumType.STRING - string 그대로 들어감.
      * EnumType.ORDINAL - 순서대로 숫자로 변경해서 들어감.
@@ -142,8 +140,34 @@ public class Member extends BaseEntity{
 
     /**
      * 임베디드 타입과 테이블 매핑
+     */
+    // 기간 Period
+    @Embedded
+    private Period period;
+
+    // 주소
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    /**
+     * @AttributeOverrides
+     * - 한 엔티티에서 같은 값 타입을 사용한다면?
+     * - 컬럼 명이 중복됨
+     * - @AttributeOverrides, @AttributeOverride 을 사용해서 컬럼 명 속성을 재정의
      *
      */
+    @AttributeOverrides({
+            @AttributeOverride(name="city",
+                    column=@Column(name = "WORK_CITY")),
+            @AttributeOverride(name="street",
+                    column=@Column(name = "WORK_STREET")),
+            @AttributeOverride(name="zipcode",
+                    column=@Column(name = "WORK_ZIPCODE"))
+
+    })
+    private Address workAddress;
+
 
     public Member(String name, Integer age, RoleType roleType, LocalDate testLocalDate, LocalDateTime localDateTime, String description, String code) {
         this.name = name;
@@ -155,6 +179,46 @@ public class Member extends BaseEntity{
         this.localDateTime = localDateTime;
         this.description = description;
         this.code = code;
+    }
+
+    public Address getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(Address workAddress) {
+        this.workAddress = workAddress;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Locker getLocker() {
+        return locker;
+    }
+
+    public void setLocker(Locker locker) {
+        this.locker = locker;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
     }
 
     public Integer getAge() {
@@ -209,8 +273,8 @@ public class Member extends BaseEntity{
 //                '}';
 //    }
 
-    public Member() {}
-
+    public Member() {
+    }
 
 
     public Long getId() {

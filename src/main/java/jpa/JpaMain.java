@@ -584,8 +584,22 @@ public class JpaMain {
 //
 //            ts.commit();
 
+            /**
+             * 임베디드 타입
+             *
+             * - 임베디드 타입은 엔티티의 값일 뿐이다.
+             * - 임베디드 타입을 사용하기 전과 후에 매핑하는 테이블은 같다.
+             * - 객체와 테이블을 아주 세밀하게 매핑하는 것이 가능
+             * - 잘 설계한 ORM 애플리케이션은 매핑한 테이블의 수보다 클래스의 수가 더 많음
+             *
+             */
+            Member member = new Member();
+            member.setName("member1");
+            member.setHomeAddress(new Address("city", "street", "zipcode"));
+            member.setPeriod(new Period());
+            em.persist(member);
 
-
+            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -597,22 +611,22 @@ public class JpaMain {
         emf.close();
 
     }
-
     private static void logic(Member m1, Member m2) {
         System.out.println("m1 == m2 : " + (m1.getClass() == m2.getClass()));
         System.out.println("m1 : " + (m1 instanceof Member));
         System.out.println("m2 : " + (m2 instanceof Member));
     }
 
-//    private static void printMember(Member member) {
-//        System.out.println("member = " + member.getName());
-//    }
-//
-//    private static void printMemberAndTeam(Member member) {
-//        String username = member.getName();
-//        System.out.println("username = " + username);
-//
-//        Team team = member.getTeam();
-//        System.out.println("team = " + team);
-//    }
+    private static void printMember(Member member) {
+        System.out.println("member = " + member.getName());
+    }
+
+    private static void printMemberAndTeam(Member member) {
+        String username = member.getName();
+        System.out.println("username = " + username);
+
+        Team team = member.getTeam();
+        System.out.println("team = " + team);
+    }
+
 }
