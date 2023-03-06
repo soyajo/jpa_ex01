@@ -529,23 +529,22 @@ public class JpaMain {
              * persist : 영속
              * remove : 삭제
              */
-
-            Child child1 = new Child();
-            child1.setName("c1");
-            Child child2 = new Child();
-            child2.setName("c2");
-
-            Parent parent = new Parent();
-            parent.setName("p1");
-
-            parent.addChild(child1);
-            parent.addChild(child2);
-            // cascade = CascadeType.ALL 하면 부모만 persist 해도 자식까지 들어감.
-            em.persist(parent);
-//            em.persist(child1);
-//            em.persist(child2);
-
-            ts.commit();
+//            Child child1 = new Child();
+//            child1.setName("c1");
+//            Child child2 = new Child();
+//            child2.setName("c2");
+//
+//            Parent parent = new Parent();
+//            parent.setName("p1");
+//
+//            parent.addChild(child1);
+//            parent.addChild(child2);
+//            // cascade = CascadeType.ALL 하면 부모만 persist 해도 자식까지 들어감.
+//            em.persist(parent);
+////            em.persist(child1);
+////            em.persist(child2);
+//
+//            ts.commit();
 
 
 
