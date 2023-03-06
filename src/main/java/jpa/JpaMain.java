@@ -625,27 +625,29 @@ public class JpaMain {
              * 값타입의 클래스를 setter 를 없애던가 private 으로 변경한다.(컴파일러단에서 막을 수 있음)
              *
              */
-            Address newAddress = new Address("newCity", "street", "10000");
-            // 해결방안
-            Address oldAddress = new Address("oldCity", "street", "10000");
+//            Address newAddress = new Address("newCity", "street", "10000");
+//            // 해결방안
+//            Address oldAddress = new Address("oldCity", "street", "10000");
+//
+//            Member member1 = new Member();
+//            member1.setName("member1");
+//            member1.setHomeAddress(newAddress);
+//            em.persist(member1);
+//
+//            Address address1 = new Address(newAddress.getCity(), oldAddress.getZipcode(), oldAddress.getZipcode());
+//
+//            Member member2 = new Member();
+//            member2.setName("member2");
+//            // 실수로 newAddress 를 넣으면 컴파일단에서 막을 방법이 없다.
+//            member2.setHomeAddress(oldAddress);
+//            em.persist(member2);
+//
+//            // member1, member2 둘 다 변경.
+////            member1.getHomeAddress().setCity("newCity");
+//
+//            ts.commit();
 
-            Member member1 = new Member();
-            member1.setName("member1");
-            member1.setHomeAddress(newAddress);
-            em.persist(member1);
 
-            Address address1 = new Address(newAddress.getCity(), oldAddress.getZipcode(), oldAddress.getZipcode());
-
-            Member member2 = new Member();
-            member2.setName("member2");
-            // 실수로 newAddress 를 넣으면 컴파일단에서 막을 방법이 없다.
-            member2.setHomeAddress(oldAddress);
-            em.persist(member2);
-
-            // member1, member2 둘 다 변경.
-//            member1.getHomeAddress().setCity("newCity");
-
-            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package jpa;
 
+import jpa.domain.Address;
+
 public class ValueMain {
     public static void main(String[] args) {
 
@@ -44,6 +46,25 @@ public class ValueMain {
          * 단점
          * -
          */
+
+
+        /**
+         * 값타입의 비교
+         *
+         * - 동일성(identity) 비교 : 인스턴스의 참조 값을 비교, == 사용
+         * - 동등성(equivalence) 비교 : 인스턴스의 값을 비교, equals() 사용
+         * - 값 타입은 a.equals(b)를 사용해서 동등성 비교를 해야 함
+         * - 값타입의 equals() 메소드를 적절하게 재정의(주로 모든 필드 사용)
+         *
+         * - 오버라이드 를 사용해서 equal 오버라이드 하여 비교해야한다.
+         */
+        Address address1 = new Address("newCity", "street", "10000");
+        Address address2 = new Address("newCity", "street", "10000");
+        System.out.println("address1 == address2 : " + (address1 == address2));
+        // Address에 equals 오버라이딩 해야함.
+        System.out.println("address1 equals address2 : " + (address1.equals(address2)));
+
+
 
     }
 }
