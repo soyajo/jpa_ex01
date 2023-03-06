@@ -564,25 +564,28 @@ public class JpaMain {
              * - 도메인 주도 설계 (DDD)의 Aggregate Root개념을 구현할 때 유용
              */
 
-            Child child1 = new Child();
-            child1.setName("c1");
-            Child child2 = new Child();
-            child2.setName("c2");
+//            Child child1 = new Child();
+//            child1.setName("c1");
+//            Child child2 = new Child();
+//            child2.setName("c2");
+//
+//            Parent parent = new Parent();
+//            parent.setName("p1");
+//
+//            parent.addChild(child1);
+//            parent.addChild(child2);
+//            em.persist(parent);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Parent findParent = em.find(Parent.class, parent.getId());
+//            findParent.getChildList().remove(0);
+//
+//            ts.commit();
 
-            Parent parent = new Parent();
-            parent.setName("p1");
 
-            parent.addChild(child1);
-            parent.addChild(child2);
-            em.persist(parent);
 
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-
-            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();

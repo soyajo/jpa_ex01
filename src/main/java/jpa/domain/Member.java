@@ -140,6 +140,11 @@ public class Member extends BaseEntity{
     @Transient
     private String code;
 
+    /**
+     * 임베디드 타입과 테이블 매핑
+     *
+     */
+
     public Member(String name, Integer age, RoleType roleType, LocalDate testLocalDate, LocalDateTime localDateTime, String description, String code) {
         this.name = name;
         this.age = age;
