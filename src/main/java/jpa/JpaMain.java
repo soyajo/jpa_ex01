@@ -377,19 +377,115 @@ public class JpaMain {
              * - 조회, 검색 불가(em.find(BaseEntity) 불가)
              * - 직접 생성해서 사용할 일이 없으므로 추상 클래스 권장
              */
-            Member member = new Member();
-            member.setName("user1");
-            member.setCreatedBy("kim");
-            member.setCreatedDate(LocalDateTime.now());
+//            Member member = new Member();
+//            member.setName("user1");
+//            member.setCreatedBy("kim");
+//            member.setCreatedDate(LocalDateTime.now());
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            ts.commit();
 
+            /**
+             * 프록시 기초
+             * em.getREference() : 데이터베이스 조회를 미루는 가짜 (프록시) 엔티티 객체 조회
+             * - findMember.getClass()로 조회해보면 Member$HibernateProxy$TtbY4xfY 프록시 객체가 나옴.
+             * - 가짜 객체
+             *
+             * 프록시 특징
+             * - 프록시 객체는 처음 사용할 때 한 번만 초기화
+             * - 프록시 객체가 초기화될 때 실제 엔티티로 바뀌는게 아님.
+             * - 프록시 객체는 원본 엔티티를 상송받음, 따라서 타입 체크 시 주의해야함.( == 비교 실패, 대신 instance of 사용)
+             * - 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 em.getReference()를 호출해도 실제 엔티티 반환
+             * - 영속성 도움을 받을 수 없는 준영속 상태일 때, 프록시를 초기화하면 오류 발생
+             */
+//            Member member = em.find(Member.class, 1L);
+//            printMember(member);
+//            printMemberAndTeam(member);
 
-            em.persist(member);
+//            Member member = new Member();
+//            member.setName("hello");
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+////            Member findMember = em.find(Member.class, member.getId());
+//            Member findMember = em.getReference(Member.class, member.getId());
+//            // 가짜 객체
+//            System.out.println("findMember = " + findMember.getClass());
+//            System.out.println("findMember.getName() = " + findMember.getName());
+//            System.out.println("findMember.getName() = " + findMember.getName());
 
-            em.flush();
-            em.clear();
+//            ts.commit();
+            //==================================
+            // 프록시 객체는 원본 엔티티를 상송받음, 따라서 타입 체크 시 주의해야함.( == 비교 실패, 대신 instance of 사용) 예제
+//            Member member1 = new Member();
+//            member1.setName("m1");
+//            em.persist(member1);
+//            Member member2 = new Member();
+//            member2.setName("m2");
+//            em.persist(member2);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member m1 = em.find(Member.class, member1.getId());
+//            System.out.println("m1.getClass() = " + m1.getClass());
+//            Member m2 = em.getReference(Member.class, member2.getId());
+//            System.out.println("m2.getClass() = " + m2.getClass());
+//            // em.find == em.getReference 비교 시 같은 값이라도 false;
+//            logic(m1, m2);
+//            ts.commit();
 
+            //=============================
+            // 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 em.getReference()를 호출해도 실제 엔티티 반환 예제
+//            Member member1 = new Member();
+//            member1.setName("m1");
+//            em.persist(member1);
+//
+//            em.flush();
+//            em.clear();
+//            // refMember가 먼저 선언되면 둘 다 프록시 객체, findMember 먼저 선언되면 둘 다 그냥 객체이다.
+//            Member findMember = em.find(Member.class, member1.getId());
+//            System.out.println("findMember.getClass() = " + findMember.getClass());
+//            Member refMember = em.getReference(Member.class, member1.getId());
+//            System.out.println("refMember.getClass() = " + refMember.getClass());
+//            System.out.println("findMember == refMember : " + (findMember.getClass() == refMember.getClass()));
 
-            ts.commit();
+//            ts.commit();
+
+            //================================
+            // 영속성 도움을 받을 수 없는 준영속 상태일 때, 프록시를 초기화하면 오류 발생
+//            Member member1 = new Member();
+//            member1.setName("m1");
+//            em.persist(member1);
+//
+//            em.flush();
+//            em.clear();
+//            // refMember가 먼저 선언되면 둘 다 프록시 객체, findMember 먼저 선언되면 둘 다 그냥 객체이다.
+//            Member refMember = em.getReference(Member.class, member1.getId());
+//            System.out.println("refMember.getClass() = " + refMember.getClass());
+//
+////            em.detach(refMember);
+////            em.close();
+//
+//            // 에러 org.hibernate.LazyInitializationException
+////            System.out.println("refMember.getName() = " + refMember.getName());
+//
+//            // 프록시 인스턴스의 초기화 여부 확인
+//            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+
+//            ts.commit();
+
+            /**
+             * 즉시 로딩과 지연로딩
+             *
+             */
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,4 +497,22 @@ public class JpaMain {
         emf.close();
 
     }
+
+    private static void logic(Member m1, Member m2) {
+        System.out.println("m1 == m2 : " + (m1.getClass() == m2.getClass()));
+        System.out.println("m1 : " + (m1 instanceof Member));
+        System.out.println("m2 : " + (m2 instanceof Member));
+    }
+
+//    private static void printMember(Member member) {
+//        System.out.println("member = " + member.getName());
+//    }
+//
+//    private static void printMemberAndTeam(Member member) {
+//        String username = member.getName();
+//        System.out.println("username = " + username);
+//
+//        Team team = member.getTeam();
+//        System.out.println("team = " + team);
+//    }
 }

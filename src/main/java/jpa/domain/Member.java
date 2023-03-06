@@ -130,7 +130,7 @@ public class Member extends BaseEntity{
     @Transient
     private String code;
 
-    public Member(String name, Integer age, RoleType roleType, Date createdDate, Date lastModifiedDate, LocalDate testLocalDate, LocalDateTime localDateTime, String description, String code) {
+    public Member(String name, Integer age, RoleType roleType, LocalDate testLocalDate, LocalDateTime localDateTime, String description, String code) {
         this.name = name;
         this.age = age;
         this.roleType = roleType;
@@ -182,19 +182,17 @@ public class Member extends BaseEntity{
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", roleType=" + roleType +
-//                ", createdDate=" + createdDate +
-//                ", lastModifiedDate=" + lastModifiedDate +
-                ", description='" + description + '\'' +
-                ", code='" + code + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Member{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", age=" + age +
+//                ", roleType=" + roleType +
+//                ", description='" + description + '\'' +
+//                ", code='" + code + '\'' +
+//                '}';
+//    }
 
     public Member() {}
 
