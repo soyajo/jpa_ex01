@@ -546,7 +546,43 @@ public class JpaMain {
 //
 //            ts.commit();
 
+            /**
+             * 고아객체
+             *
+             * 고아 객체 제거 : 부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제
+             *
+             * orphanRemoval = true
+             *
+             * 주의사항
+             * - 참조하는 곳이 하나일 때 사용해야함.
+             * - 특정 엔티티가 개인 소유할 때 사용
+             * @OneToOne, @OneToMany 만 가능
+             *
+             * cascade = CascadeType.ALL + orphanRemoval = true
+             * - 스스로 생명주기를 관리하는 에티티는 em.persist()로 영속화, em.remove()로 제거
+             * - 두 옵션을 모두 활성화 하면 부모 엔티티를 통해서 자식의 생명주기를 관리할 수 있음.
+             * - 도메인 주도 설계 (DDD)의 Aggregate Root개념을 구현할 때 유용
+             */
 
+            Child child1 = new Child();
+            child1.setName("c1");
+            Child child2 = new Child();
+            child2.setName("c2");
+
+            Parent parent = new Parent();
+            parent.setName("p1");
+
+            parent.addChild(child1);
+            parent.addChild(child2);
+            em.persist(parent);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
+
+            ts.commit();
 
         } catch (Exception e) {
             e.printStackTrace();
