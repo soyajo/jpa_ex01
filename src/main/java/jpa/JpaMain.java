@@ -514,6 +514,40 @@ public class JpaMain {
 //            findMember.getTeam().getName(); // 초기화
 //            System.out.println("==================");
 
+//            ts.commit();
+
+            /**
+             * 영속성 전이 : casecade
+             * - 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속상태로 만들고 싶을 때
+             * 예 : 부모 엔티티를 저장할 때 자식 엔티티도 함께 저장.
+             *
+             * 주의
+             * - 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없음
+             * - 엔티티를 영속화할 때 연관된 엔티티도 함께 영속화하는 편리함을 제공할 뿐
+             * 종류
+             * all : 모두 적용
+             * persist : 영속
+             * remove : 삭제
+             */
+
+            Child child1 = new Child();
+            child1.setName("c1");
+            Child child2 = new Child();
+            child2.setName("c2");
+
+            Parent parent = new Parent();
+            parent.setName("p1");
+
+            parent.addChild(child1);
+            parent.addChild(child2);
+            // cascade = CascadeType.ALL 하면 부모만 persist 해도 자식까지 들어감.
+            em.persist(parent);
+//            em.persist(child1);
+//            em.persist(child2);
+
+            ts.commit();
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
