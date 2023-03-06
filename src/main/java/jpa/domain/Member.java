@@ -88,7 +88,17 @@ public class Member extends BaseEntity{
      * FetchType.LAZY - 지연로딩
      *
      */
+    /**
+     * 지연로딩
+     * - team 을 가지고 올때 프록시 객체로 가지고옴.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
+    /**
+     * 즉시로딩
+     * - 프록시 객체를 사용하지 않고 바로 가지고옴.
+     *
+     */
+//    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 

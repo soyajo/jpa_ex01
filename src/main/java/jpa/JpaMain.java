@@ -485,7 +485,35 @@ public class JpaMain {
             /**
              * 즉시 로딩과 지연로딩
              *
+             * 즉시 로딩
+             * - n + 1 문제
+             * - 절대 실무에서는 사용하면 안됨!!!! (중요)
+             * - jpql에서 n + 1 문제를 일으킨다.
+             * - @ManyToOne, @OneToOne 은 기본이 즉시로딩 -> 지연로딩으로 바꿔야함.
+             * 지연 로딩
+             * - 꼭 사용
              */
+//            Team team = new Team();
+//            team.setName("teamA");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setTeam(team);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            // Team$HibernateProxy$jgAluLTv 프록시 객체로 나옴
+//            System.out.println("findMember.getTeam().getClass() = " + findMember.getTeam().getClass());
+//
+//            System.out.println("==================");
+//            // 지연로딩으로 팀을 찾을 때 디비로 select 함.
+//            findMember.getTeam().getName(); // 초기화
+//            System.out.println("==================");
+
 
         } catch (Exception e) {
             e.printStackTrace();
