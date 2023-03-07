@@ -7,6 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -730,12 +733,28 @@ public class JpaMain {
 
             /**
              * JPQL
-             * - sql을 추상화한 jpql이라는 객체 지향 쿼리 언어 제공
+             * - sql을 추상화한 jpql이라는 객체 지향 쿼리 언어
+             *
              */
-            List<Member> members = em.createQuery("select m from Member m where name like '%kim%'", Member.class).getResultList();
-            for (Member member : members) {
-                System.out.println("member = " + member);
-            }
+//            List<Member> members = em.createQuery("select m from Member m where name like '%kim%'", Member.class).getResultList();
+//            for (Member member : members) {
+//                System.out.println("member = " + member);
+//            }
+            /**
+             * criteria
+             * - 동적쿼리 가능             * - 실무에서 사용 안함.
+             */
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//            Root<Member> m = query.from(Member.class);
+//            CriteriaQuery<Member> criteriaQuery = query.select(m);
+//            String username = "dsss";
+//            if (username != null) {
+//                criteriaQuery = criteriaQuery.where(cb.equal(m.get("name"), "kim"));
+//            }
+//            List<Member> resultList = em.createQuery(criteriaQuery).getResultList();
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
