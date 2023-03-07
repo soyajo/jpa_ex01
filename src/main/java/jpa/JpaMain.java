@@ -11,6 +11,8 @@ import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -649,10 +651,91 @@ public class JpaMain {
 
             /**
              * 값 타입 컬렉션
-             * 
+             * - 지연로딩이다.
+             * - 값 타입을 하나 이상 저장할때 사용
+             * - @ElementCollection, @CollectionTable 사용
+             * - 데이터베이스는 컬렉션을 같은 테이블에 저장할 수 없다.
+             * - 컬렉션을 저장하기 위한 별도의 테이블이 필요함
+             * - 참고 : 값 타입 컬렉션은 영속성 전이(casecade) + 고아 객체 제거 기능을 필수로 가진다고 볼 수 있음.
              *
+             * 값 타입 컬렉션의 제약사항
+             * - 값 타입은 엔티티와 다르게 식별자 개념이 없다.
+             * - 값은 변경하면 추적이 어렵다.
+             * - 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장한다.!!!(주의)
+             * - 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본키를 구성해야 함 : null 입력 x, 중복 저장 x
+             *
+             * 값 타입 컬렉션의 대안
+             * - 실무에서는 상황에 따라 값 타입 컬렉션 대신에 일대다 관계를 고려
+             * - 일대다 관계를 위한 엔티티를 만들고, 여기에서 값 타입을 사용
+             * - 영속성 전이(casecade) + 고아 객체 제거를 사용해서 값 타입 컬렉션 처럼 사용
+             * - 예) AddressEntity
+             *
+             * 정리
+             *
+             * 엔티티 타입의 특징
+             * - 식별자
+             * - 생명 주기 관리
+             * - 공유
+             *
+             * 값 타입의 특징
+             * - 시별자 x
+             * - 생명 주기를 엔티티에 의존
+             * - 공유하지 않는 것이 안전 ( 복사해서 사용)
+             * - 불변 객체로 만드는 것이 안전
              */
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(new Address("homeCity","street1","10000"));
+//
+//            member.getFavoriteFoods().add("치킨");
+//            member.getFavoriteFoods().add("족발");
+//            member.getFavoriteFoods().add("피자");
+//
+//            member.getAddressHistory().add(new AddressEntity("old1", "street1", "10000"));
+//            member.getAddressHistory().add(new AddressEntity("old2", "street1", "10000"));
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            System.out.println("========start==========");
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            Address a = findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity",a.getStreet(),a.getZipcode()));
+//
+//            //치킨 -> 한식
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+//
+//            // address 에 equals 오버라이딩을 해야함
+//            // findMember 안에 addressHistory 모두 제거 후 생성
+////            findMember.getAddressHistory().remove(new Address("old1", "street1", "10000"));
+////            findMember.getAddressHistory().add(new Address("newCity1", "street1", "10000"));
+//
+//            // 지연로딩
+////            List<Address> addressHistory = findMember.getAddressHistory();
+////            for (Address address : addressHistory) {
+////                System.out.println("address.getCity() = " + address.getCity());
+////            }
+//            // 지연로딩
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for (String favoriteFood : favoriteFoods) {
+//                System.out.println("favoriteFood = " + favoriteFood);
+//            }
+//
+//
+//            ts.commit();
 
+            /**
+             * JPQL
+             * - sql을 추상화한 jpql이라는 객체 지향 쿼리 언어 제공
+             */
+            List<Member> members = em.createQuery("select m from Member m where name like '%kim%'", Member.class).getResultList();
+            for (Member member : members) {
+                System.out.println("member = " + member);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
